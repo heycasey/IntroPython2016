@@ -1,10 +1,18 @@
 #!/usr/bin/env python
 
-donors = [('Ed', [1, 4, 5]), ('Thomas', [3]), ('Nancy', [94, 6]), ('Sally', [42])]
+donors = [('Ed', [1, 4, 5]), ('Thomas', [3]), ('Nancy', [94, 6]), ('Sally', [42, 20, 10, 5, 60])]
 
 def print_report():
     print("This will print a report")
-
+    for i in range(len(donors)):
+        nm = donors[i][0]
+        tot= sum(donors[i][1])
+        avg = find_avg(donors[i][1])
+        count = len(donors[i][1])
+        print("Name is: {name}".format(name=nm))
+        print("Total donation is: {total}".format(total=tot))
+        print("Average donation is: {average}".format(average=avg))
+        print("Total number of donations is: {totalnum}".format(totalnum=count))
 
 def send_thanks():
     print("This will write a thank you note")
@@ -23,6 +31,11 @@ def find_name(name):
         if donor in donors[i]:
             return i
 #        return None
+
+def find_avg(val):
+    # Return the average of the list
+    return sum(val)/len(val)
+
 
 
 # here is where triple quoted strings can be helpful
