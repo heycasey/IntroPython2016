@@ -21,9 +21,6 @@ def series1(fruit):
     Take in a list of strings and display the original list before prompting
     the user to add additonal items to the list. The original list is modified
     based on user input and insertions to the beginning of the list.
-
-    Questions:
-    What does 'one is first basis' mean?
     """
     print(fruit)
     # Prompts user for an additional fruit
@@ -31,8 +28,8 @@ def series1(fruit):
     fruit.append(new_fruit)
     print(fruit)
     number = int(input("Please enter a number "))
-    # Ask about 'one is first basis'.
-    print(number, fruit[number])
+    # Display number and corrisponding fruit on one is first basis.
+    print(number, fruit[number - 1])
     # Adds new fruit to beginning of list using concatenation
     fruit = ["Watermelon"] + fruit
     print(fruit)
@@ -67,14 +64,8 @@ def series3(fruit):
     fruit, it is deleted from the list. If the user does not specify their
     preference, they are prompted until they do. A list of remaining fruit is
     displayed after the user has specified their preference for each fruit.
-
-    Questions:
-    Best way to ensure each element is lowercase.
-    How to avoid skipping elements when the element before them is deleted.
-    Best way of ending the while loop.
-    Correctness of using break and when not to use break.
     """
-    for item in fruit:
+    for item in fruit[:]:
         # Asks the user whether they like each fruit
         preference = input("Do you like " + item.lower() + "? yes|no ")
         # Checks to make sure user entered either 'yes' or 'no'
@@ -83,8 +74,7 @@ def series3(fruit):
             while True:
                 preference = input("Please answer with either yes or no ")
                 if preference == 'yes' or preference == 'no':
-                    # Ask about using break instead of False
-                    return False
+                    break
         if preference == 'no':
             # remove item from fruit
             fruit.remove(item)
@@ -118,8 +108,8 @@ def main():
     fruit = ["Apples", "Pears", "Oranges", "Peaches"]
     # series1(fruit)
     # series2(fruit)
-    # series3(fruit)
-    series4(fruit)
+    series3(fruit)
+    # series4(fruit)
 
 
 if __name__ == '__main__':
