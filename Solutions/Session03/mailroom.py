@@ -137,13 +137,13 @@ def print_donor_report():
         report_rows.append((name, total_gifts, num_gifts, avg_gift))
 
     # sort the report data
-    report_rows.sort(key=sort_key)
+    report_rows.sort(key=sort_key, reverse=True)
     # print it out in with a nice format.
     print("{:25s} | {:11s} | {:9s} | {:12s}".format(
           "Donor Name", "Total Given", "Num Gifts", "Average Gift"))
     print("-" * 66)
     for row in report_rows:
-        print("{:25s}   {:11.2f}   {:9d}   {:12.2f}".format(*row))
+        print("{:25s}  ${:11.2f}   {:9d}  ${:12.2f}".format(*row))
 
 if __name__ == "__main__":
     running = True

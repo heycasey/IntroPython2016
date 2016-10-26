@@ -8,7 +8,7 @@ print("=============== PRINT A GRID =================================")
 # no_of_rows = 11
 # no_of_cols = 11
 
-# Get rows and cols from the user
+# Get rows and cols from the user -- other ways to do thi
 no_of_rows = sys.argv[1]
 no_of_cols = sys.argv[2]
 
