@@ -10,6 +10,8 @@ python copy_file original_file_name, new_file_name
 
 import sys
 
+print(sys.argv)
+
 source, dest = sys.argv[1:3]
 
 # # binary mode important here.
@@ -26,3 +28,4 @@ with open(source, 'rb') as infile, open(dest, 'wb') as outfile:
         if not data:  # End of file
             break
         outfile.write(data)
+

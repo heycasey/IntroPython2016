@@ -43,7 +43,58 @@ def sum_d(donors):
     return total_list
 
 
-def send_ty(donors):
+def print_donor(donor_dict):
+    """
+    Take in the dictionary of donors and displays each donor name.
+    """
+    for key in donor_dict:
+        print(donor_dict[key])
+
+
+def find_donor(full_name, donor_dict):
+    """
+    Take in the name of the donor and the donor dictionary. Iterate through the
+    compliation of donors and return donor information.
+
+    To Do:
+    Ensure 'donor' returns all donor related information.
+    """
+    for donor in donor_dict:
+        if full_name.strip().lower() == donor.lower():
+            return donor
+
+
+def main_menu_selection(message):
+    """
+    Take in donor option message, prompts user for a response and return
+    their response.
+    """
+    # Provide options and prompt the user for a response.
+    print(message)
+    # Remove any additional white space.
+    action = input('==> ').strip()
+    return action
+
+
+def create_letter(donor):
+    """
+    Take in donor information and return a thank you letter to specific donor.
+    To Do:
+    Ensure donor key value pair works as intended.
+    """
+    # Display thank you
+    return '''
+          Dear {},
+          Thank you for your generous donation of ${}!
+          Your contribution to this organization will greatly
+          impact our efforts to complete our mission.
+
+          Sincerely,
+          -The Team
+          '''.format(donors[d_index][0], donors[d_index][1][-1]))
+
+
+def send_ty(donor_dict):
     """
     This function takes in a multi dimensional list of donors and
     contributions, prompts for specific donor information and composes a thank
@@ -51,8 +102,7 @@ def send_ty(donors):
     """
     full_name = input("Please enter your full name: ")
     if full_name == 'list':
-        for item in donors:
-            print(item[0])
+        print_donor(donor_dict)
         full_name = input("Please enter your full name: ")
     if full_name not in donors:
         # Add new donor name to donors
@@ -65,13 +115,7 @@ def send_ty(donors):
     d_index = add_donor(full_name, donors)
     # Append to donor in donors
     donors[d_index][1].append(amount)
-    # Display thank you
-    print("""
-    Dear {},
-    Thank you for your generous donation of ${}!
-    Your contribution to this organization will greatly
-    impact our efforts to complete our mission.
-    """.format(donors[d_index][0], donors[d_index][1][-1]))
+    print(create_letter(donor))
 
 
 def add_donor(name, donors):
@@ -100,6 +144,12 @@ def main():
               ['Satya Nadella', [140000, 111000]],
               ['Susan Wojcicki', [100000, 109000]]]
 
+    donor_dict = {'Bill Gates': [1000000, 2500000, 1800000], 'Sheryl Sandberg':
+                  [200000, 100000, 130000], 'Larry Page': [150000, 110000,
+                  170000], 'Satya Nadella': [140000, 111000], 'Susan Wojcicki':
+                  [100000, 109000]
+                  }
+
     message = """
     Please select from the following options:
 
@@ -111,10 +161,7 @@ def main():
     action = ''
     # Continue to prompt user until user enters 'x'
     while True:
-        # Provide options and prompt the user for a response.
-        print(message)
-        # Remove any additional white space.
-        action = input('==> ').strip()
+        action = main_menu_selection(message)
         # Determine action to take.
         if action == 's':
             send_ty(donors)
