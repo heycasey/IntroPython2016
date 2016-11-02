@@ -32,26 +32,22 @@ infilename = "students.txt"
 # https://docs.python.org/3/library/collections.html#collections.Counter
 
 from collections import Counter
+all_langs = Counter()
 
-#all_langs = Counter()
-
-all_langs = {}
+# all_langs = {}
 
 with open(infilename) as f:
     f.readline()  # read and toss the header
 
     for line in f:
-        langs = line.split(':')[1]  # toss the names
+        langs = line.partition(':')[2]  # get just what's after the colon
         # a bit of cleanup:
         langs = langs.replace(',', ' ').replace('and', ' ')
         langs = langs.split()  # separate the languages
         for lang in langs:
             lang = lang.strip().capitalize()  # clean them up -- and make case the same
             if lang:  # don't want empty strings
-                if lang in all_langs:
                     all_langs[lang] += 1
-                else:
-                    all_langs[lang] = 1
 
 print("And now the counted version")
 for lang, count in all_langs.items():

@@ -6,9 +6,10 @@ test file for codingbat module
 This version can be run with nose or py.test
 """
 
-from codingbat import sleep_in
+from codingbat import sleep_in, monkey_trouble
 
 
+# tests for sleep_in
 def test_false_false():
     assert sleep_in(False, False)
 
@@ -23,3 +24,10 @@ def test_false_true():
 
 def test_true_true():
     assert sleep_in(True, True)
+
+
+# put tests for monkey_trouble here
+def test_monkey_true_true():
+    assert monkey_trouble(True, True)
+
+# more!
