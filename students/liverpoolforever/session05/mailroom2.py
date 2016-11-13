@@ -30,7 +30,8 @@ def print_report():
 def send_thanks():
     print(ASK_NAME)
     listOfDonors = list(donorList.keys())
-    res = input("==> ").strip()
+    # res = input("==> ").strip()
+    res = safe_input()
     # if donor types list
     if res == 'list':
         print("list of donors are : " , listOfDonors)
@@ -40,10 +41,12 @@ def send_thanks():
     else:
         # Ask if you a donor
         print('Are a new donor ? , Type "y" or "n" ')
-        newDonor = input("==> ").strip()
+        # newDonor = input("==> ").strip()
+        newDonor = safe_input()
         if newDonor == 'y':
             print(ASK_NAME)
-            resName = input("==> ").strip()
+            # resName = input("==> ").strip()
+            resName = safe_input()
             #  add the new donor
             donorList[resName] = []
             #  send the donor for his amount
@@ -55,7 +58,8 @@ def send_thanks():
 
 def addAmt(nameOfDonor):
     print(ASK_DONATION)
-    resAmt = input("==> ").strip()
+    # resAmt = input("==> ").strip()
+    resAmt = safe_input()
     # convert amt to int
     resAmt = int(resAmt)
     if isinstance(resAmt,int):
@@ -63,7 +67,7 @@ def addAmt(nameOfDonor):
         donorList[nameOfDonor].append(resAmt)
         # Write the email here
         # EMAIL.format(nameOfDonor,resAmt)
-        print(EMAIL.format(nameOfDonor,resAmt))
+        print(EMAIL.format(nameOfDonor,resAmt,1,1))
     else:
         print("Please enter donation as a number")
 
@@ -78,22 +82,32 @@ To exit: type "x"
 
 # wrapper function for handling exceptions in inputs
 def safe_input():
-    pass
+    try:
+        response = input("==> ").strip()
+        return response
+    except (EOFError,KeyboardInterrupt) as e:
+        
+        print("Input interrupted by user or end of line reached")
+        return None
+
 
 def main():
+    #  test safe_input wrapper
+    # safe_input()
     """
     run the main interactive loop
     """
-
     response = ''
     # keep asking until the users responds with an 'x'
     while True:  # make sure there is a break if you have infinite loop!
         print(msg)
-        response = input("==> ").strip()  # strip() in case there are any spaces
+        response = safe_input()  # strip() in case there are any spaces at the start or end
         if response == 'p':
             print_report()
         elif response == 's':
             send_thanks()
+        elif response == None:
+            continue
         elif response == 'x':
             break
         else:

@@ -80,23 +80,25 @@ def build_trigram(str_key, tri_dict):
     out_list = []
     # Current key
     key_phrase = str_key
+    # Add element to out list
+    out_list.append(key_phrase)
 
+    # import pdb; pdb.set_trace()
     while True:
+
         if key_phrase not in tri_dict:
             break
-        # Add element to out list
-        out_list = out_list.append(key_phrase)
         # Get the next string
         next_str = tri_dict[key_phrase]
         if len(next_str) > 1:
             # Add random element to list
-            out_list = out_list.append(random.choice(next_str))
+            out_list.append(random.choice(next_str))
         else:
             # Add to list
-            out_list = out_list.append(next_str)
+            out_list.extend(next_str)
         # Assign new strings to key phrase
-        key_phrase = key_phrase.split
-        key_phrase = key_phrase[1] + ' ' + next_str
+        key_phrase = key_phrase.split()
+        key_phrase = key_phrase[1] + ' ' + out_list[-1]
     return out_list
 
 
@@ -105,8 +107,17 @@ def write_file(trigram):
     Take in a list of strings representing the trigram. Join list into one
     string and write to a new file.
     """
-    text = " ".join(trigram)
+    # text = " ".join(trigram)
+    lines = []
     with open('new_trigram.txt', 'w') as outfile:
+        for string in trigram:
+            if len(lines) > 8:
+                text = " ".join(lines) + '\n'
+                outfile.write(text)
+                lines = []
+            else:
+                lines.append(string)
+        text = " ".join(lines) + '\n'
         outfile.write(text)
     outfile.close()
 
@@ -117,7 +128,7 @@ def main():
     """
     Calls methods and builds a trigram based on an input file.
     """
-    string = read_file('tri_test.txt')
+    string = read_file('sherlock_small.txt')
     str_list = gen_list(string)
     tri_dict = dict_gen(str_list)
     str_key = key_lookup(str_list)

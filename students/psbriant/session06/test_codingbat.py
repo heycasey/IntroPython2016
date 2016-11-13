@@ -27,17 +27,7 @@ def test_true_true():
 
 
 # put tests for monkey_trouble here
-# monkey_trouble(True, True) → True
-# monkey_trouble(False, False) → True
-# monkey_trouble(True, False) → False
-
 def test_monkey_true_true():
     assert monkey_trouble(True, True)
-
-def test_monkey_false_false():
-    assert monkey_trouble(False, False)
-
-def test_monkey_true_false():
-    assert monkey_trouble(True, False) is False
 
 # more!

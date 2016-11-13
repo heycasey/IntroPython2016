@@ -16,7 +16,7 @@ Put here so we can write unit tests for them ourselves
 
 
 def sleep_in(weekday, vacation):
-    return not weekday or vacation
+    return not (weekday and vacation)
 
 
 # We have two monkeys, a and b, and the parameters a_smile and b_smile
@@ -28,4 +28,4 @@ def sleep_in(weekday, vacation):
 # Return True if we are in trouble.
 
 def monkey_trouble(a_smile, b_smile):
-    return a_smile is b_smile
+    pass

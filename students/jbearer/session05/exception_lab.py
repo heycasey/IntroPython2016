@@ -9,7 +9,8 @@ def wrapper():
     try:
         userInput = input('Enter ^C or ^D: ')
     except (KeyboardInterrupt, EOFError) as the_error:
-        print('\nNone')
+        return None
+    return userInput
 
-wrapper()
+print(wrapper())
 
