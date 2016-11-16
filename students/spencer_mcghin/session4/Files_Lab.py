@@ -1,5 +1,6 @@
 import numpy, collections
 
+from collections import Counter
 
 # Print absolute path of files in current directory #
 
@@ -15,11 +16,8 @@ def gen_lang():
     for line in doc[1:-1]:
         students, languages = line.strip().split(':')
         data.append(languages)
-    " ".join(data)
-
-
-
-gen_lang()
+        data = [langs.split(',')[0] for langs in data]
+    print(Counter(sorted(data)))
 
 
 
