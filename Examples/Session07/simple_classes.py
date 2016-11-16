@@ -52,6 +52,16 @@ print(p3.size)
 print(p3.get_color())
 
 
+class Rect:
+
+    def __init__(self, w, h):
+        self.w = w
+        self.h = h
+
+    def get_size(self):
+        return (self.w * self.h)
+
+
 class Circle:
     color = "red"
     styles = ['dashed']

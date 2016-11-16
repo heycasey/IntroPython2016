@@ -11,5 +11,4 @@ or False otherwise.
 
 
 def cigar_party(num, weekend):
-    return num >= 40  and (num <= 60 or weekend)
-
+    return num >= 40 and (num <= 60 or weekend)

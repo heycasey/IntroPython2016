@@ -1,5 +1,6 @@
 # Grid printer
 
+
 def print_grid():
 
     pl = "+"

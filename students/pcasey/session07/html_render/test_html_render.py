@@ -38,7 +38,7 @@ def test_render():
     e = Element("this is also text")
     e.append("let's add even more text")
 
-    e.render(outfile)
+    e.render(outfile, "")
 
     outfile.seek(0)
     file_contents = outfile.read()
