@@ -2,6 +2,7 @@
 
 
 class Element:
+    tag = 'html'
     def __init__(self, content=None):
         self.content = []
         if content:
@@ -11,7 +12,7 @@ class Element:
         self.content.append(content)
 
     def render(self, out_file):
-        out_file.write("<html>\n")
+        out_file.write("<{}>\n".format(self.tag))
         for stuff in self.content:
             out_file.write(stuff+"\n")
-        out_file.write("</html>\n")
+        out_file.write("</{}>\n".format(self.tag))
