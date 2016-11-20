@@ -1,6 +1,6 @@
 #!/usr/env/python3
 
-from html_render import Element
+from html_render import Element,Html,Body,P
 import io
 
 
@@ -35,7 +35,8 @@ def test_two_instances():
 def test_render():
     outfile = io.StringIO()
 
-    e = Element("this is also text")
+    # e = Element.Html("this is also text")
+    e = Html("this is also text")
     e.append("let's add even more text")
 
     e.render(outfile, "")
