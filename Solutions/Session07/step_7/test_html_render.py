@@ -1,7 +1,7 @@
 """
 test code for html_render.py
 
-includes step 4
+includes step 7
 """
 import io
 
@@ -12,6 +12,12 @@ from html_render import (Element,
                          TextWrapper,
                          Head,
                          Title,
+                         Hr,
+                         Br,
+                         A,
+                         Ul,
+                         Li,
+                         H,
                          )
 
 # utility function for testing render methods
@@ -301,4 +307,60 @@ def test_attributes_one_line_tag():
     assert 'id="this"' in file_contents
     assert 'color="red"' in file_contents
 
+
+def test_br():
+    br = Br("")
+    file_contents = render_result(br)
+    print(file_contents)
+    assert file_contents == "<br />"
+
+
+def test_hr():
+    hr = Hr(width=400)
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr width="400" />'
+
+
+def test_anchor():
+    a = A("http://google.com", "link to google")
+    file_contents = render_result(a)
+    print(file_contents)
+    assert file_contents.startswith('<a ')
+    assert file_contents.endswith('</a>')
+    assert 'href="http://google.com"' in file_contents
+    assert 'link to google' in file_contents
+
+
+def test_ul():
+    ul = Ul()
+    ul.append(Li("item one in a list"))
+    ul.append(Li("item two in a list"))
+    file_contents = render_result(ul)
+    print(file_contents)
+    assert file_contents.startswith('<ul>')
+    assert file_contents.endswith('</ul>')
+    assert "item one in a list" in file_contents
+    assert "item two in a list" in file_contents
+    assert file_contents.count("<li>") == 2
+    assert file_contents.count("</li>") == 2
+
+
+def test_header():
+    h = H(3, "A nice header line")
+    file_contents = render_result(h)
+    print(file_contents)
+    assert file_contents.startswith('<h3>')
+    assert file_contents.endswith('</h3>')
+    assert "A nice header line" in file_contents
+
+
+def test_header():
+    h = H(3, "A nice header line", align="center")
+    file_contents = render_result(h)
+    print(file_contents)
+    assert file_contents.startswith('<h3')
+    assert file_contents.endswith('</h3>')
+    assert "A nice header line" in file_contents
+    assert ' align="center"' in file_contents
 

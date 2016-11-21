@@ -1,7 +1,7 @@
 """
 test code for html_render.py
 
-includes step 4
+includes up to step 6
 """
 import io
 
@@ -12,6 +12,9 @@ from html_render import (Element,
                          TextWrapper,
                          Head,
                          Title,
+                         Hr,
+                         Br,
+                         A,
                          )
 
 # utility function for testing render methods
@@ -302,3 +305,25 @@ def test_attributes_one_line_tag():
     assert 'color="red"' in file_contents
 
 
+def test_br():
+    br = Br("")
+    file_contents = render_result(br)
+    print(file_contents)
+    assert file_contents == "<br />"
+
+
+def test_hr():
+    hr = Hr(width=400)
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr width="400" />'
+
+
+def test_anchor():
+    a = A("http://google.com", "link to google")
+    file_contents = render_result(a)
+    print(file_contents)
+    assert file_contents.startswith('<a ')
+    assert file_contents.endswith('</a>')
+    assert 'href="http://google.com"' in file_contents
+    assert 'link to google' in file_contents

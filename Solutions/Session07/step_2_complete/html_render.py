@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Chris's solution through step 2 without indentation
+Chris's solution through step 2 with full indentation
 """
 
 

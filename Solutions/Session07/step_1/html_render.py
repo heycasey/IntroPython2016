@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+step 1 of Chris's solution
+"""
+
 
 class Element:
 

@@ -1,8 +1,9 @@
 """
 test code for html_render.py
 
-includes step 4
+includes up to step 5
 """
+
 import io
 
 from html_render import (Element,
@@ -12,6 +13,8 @@ from html_render import (Element,
                          TextWrapper,
                          Head,
                          Title,
+                         Hr,
+                         Br
                          )
 
 # utility function for testing render methods
@@ -302,3 +305,24 @@ def test_attributes_one_line_tag():
     assert 'color="red"' in file_contents
 
 
+def test_br():
+    br = Br("")
+    file_contents = render_result(br)
+    print(file_contents)
+    assert file_contents == "<br />"
+
+
+def test_br_in_p():
+    p = P("here is a small paragraph of text")
+    p.append(Br())
+    p.append("And here is some more text after a line break")
+
+    file_contents = render_result(p).split('\n')
+    print(file_contents)
+    assert file_contents[2].strip() == "<br />"
+
+def test_hr():
+    hr = Hr(width=400)
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr width="400" />'

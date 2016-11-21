@@ -1,5 +1,7 @@
 """
 test code for html_render.py
+
+includes through step 2 without indentation
 """
 import io
 

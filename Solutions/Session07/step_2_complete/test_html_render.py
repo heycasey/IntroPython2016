@@ -1,5 +1,7 @@
 """
 test code for html_render.py
+
+includes through step 2
 """
 import io
 
@@ -166,6 +168,7 @@ def test_indent():
     lines = file_contents.split("\n")
     assert lines[0].startswith("   <")
     assert lines[-1].startswith("   <")
+
 
 def test_indent_contents():
     """

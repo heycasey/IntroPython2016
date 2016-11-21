@@ -1,7 +1,7 @@
 """
 test code for html_render.py
 
-includes step 4
+Includes step 8
 """
 import io
 
@@ -12,6 +12,13 @@ from html_render import (Element,
                          TextWrapper,
                          Head,
                          Title,
+                         Hr,
+                         Br,
+                         A,
+                         Ul,
+                         Li,
+                         H,
+                         Meta,
                          )
 
 # utility function for testing render methods
@@ -76,17 +83,18 @@ def test_render():
     assert file_contents.strip().endswith("</html>")
 
 
-def test_html():
-    e = Html("this is some text")
-    e.append("and this is some more text")
+# # this test obsoleted by the one below with the DOCTYPE tag
+# def test_html():
+#     e = Html("this is some text")
+#     e.append("and this is some more text")
 
-    file_contents = render_result(e)
+#     file_contents = render_result(e)
 
-    assert("this is some text") in file_contents
-    assert("and this is some more text") in file_contents
+#     assert("this is some text") in file_contents
+#     assert("and this is some more text") in file_contents
 
-    assert file_contents.startswith("<html>")
-    assert file_contents.strip().endswith("</html>")
+#     assert file_contents.startswith("<html>")
+#     assert file_contents.strip().endswith("</html>")
 
 
 def test_body():
@@ -158,7 +166,6 @@ def test_step_2_noindent():
     """
     This is more if an integration test -- a number of things together
 
-    this test does not yet include indentation
     """
     page = Html()
     body = Body()
@@ -170,7 +177,8 @@ def test_step_2_noindent():
     file_contents = render_result(page).strip()
 
     print(file_contents)
-    assert file_contents.startswith("<html>")
+    # teh DOCTYPE tag messed this up :-(
+    # assert file_contents.startswith("<html>")
     assert file_contents.endswith("</html>")
     assert "a small paragraph of text" in file_contents
     assert "<body>" in file_contents
@@ -196,7 +204,7 @@ def test_indent_contents():
     The contents in a element should be indented more than the tag
     by the amount in the indent class attribute
     """
-    html = Html("some content")
+    html = Element("some content")
     file_contents = render_result(html, ind="")
 
     print(file_contents)
@@ -216,10 +224,10 @@ def test_multiple_indent():
 
     print(file_contents)
     lines = file_contents.split("\n")
-    for i in range(3):
-        assert lines[i].startswith(i * Element.indent + "<")
+    for i in range(3):  # this needed to be adapted to the <DOCTYPE> tag
+        assert lines[i + 1].startswith(i * Element.indent + "<")
 
-    assert lines[3].startswith(3 * Element.indent + "some")
+    assert lines[4].startswith(3 * Element.indent + "some")
 
 
 def test_title():
@@ -302,3 +310,126 @@ def test_attributes_one_line_tag():
     assert 'color="red"' in file_contents
 
 
+def test_br():
+    br = Br("")
+    file_contents = render_result(br)
+    print(file_contents)
+    assert file_contents == "<br />"
+
+
+def test_hr():
+    hr = Hr(width=400)
+    file_contents = render_result(hr)
+    print(file_contents)
+    assert file_contents == '<hr width="400" />'
+
+
+def test_anchor():
+    a = A("http://google.com", "link to google")
+    file_contents = render_result(a)
+    print(file_contents)
+    assert file_contents.startswith('<a ')
+    assert file_contents.endswith('</a>')
+    assert 'href="http://google.com"' in file_contents
+    assert 'link to google' in file_contents
+
+
+def test_ul():
+    ul = Ul()
+    ul.append(Li("item one in a list"))
+    ul.append(Li("item two in a list"))
+    file_contents = render_result(ul)
+    print(file_contents)
+    assert file_contents.startswith('<ul>')
+    assert file_contents.endswith('</ul>')
+    assert "item one in a list" in file_contents
+    assert "item two in a list" in file_contents
+    assert file_contents.count("<li>") == 2
+    assert file_contents.count("</li>") == 2
+
+
+def test_header():
+    h = H(3, "A nice header line")
+    file_contents = render_result(h)
+    print(file_contents)
+    assert file_contents.startswith('<h3>')
+    assert file_contents.endswith('</h3>')
+    assert "A nice header line" in file_contents
+
+
+def test_header2():
+    """
+    adding an attribute to a header
+    """
+    h = H(2, "A nice header line", align="center")
+    file_contents = render_result(h)
+    print(file_contents)
+    assert file_contents.startswith('<h2')
+    assert file_contents.endswith('</h2>')
+    assert "A nice header line" in file_contents
+    assert ' align="center"' in file_contents
+
+
+def test_html_doctype():
+    html = Html()
+    file_contents = render_result(html)
+    print(file_contents)
+
+    assert file_contents.startswith("<!DOCTYPE html>\n")
+
+
+def test_meta():
+    """
+    test the meta tag
+    """
+    m = Meta(charset="UTF-8")
+    file_contents = render_result(m)
+    print(file_contents)
+
+    assert file_contents == '<meta charset="UTF-8" />'
+
+
+def test_whole_thing():
+    """
+    Render a complete page
+
+    This is not really a unit test, and does not test that the results
+    are correct, but does ensure that it all runs, and provides output
+    to look at
+    """
+    page = Html()
+
+    head = Head()
+    head.append(Meta(charset="UTF-8"))
+    head.append(Title("Python Class Sample page"))
+    page.append(head)
+
+    body = Body()
+
+    body.append(H(2, "Python Class - Html rendering example"))
+
+    body.append(P("Here is a paragraph of text -- there could be more of them, "
+                  "but this is enough to show that we can do some text",
+                  style="text-align: center; font-style: oblique;"))
+
+    body.append(Hr())
+
+    list = Ul(id="TheList", style="line-height:200%")
+
+    list.append(Li("The first item in a list"))
+    list.append(Li("This is the second item", style="color: red"))
+
+    item = Li()
+    item.append("And this is a ")
+    item.append(A("http://google.com", "link"))
+    item.append("to google")
+
+    list.append(item)
+
+    body.append(list)
+
+    page.append(body)
+
+    # now render it:
+    with open("sample_output.html", 'w') as f:
+        page.render(f)
