@@ -25,11 +25,11 @@ class Element:
         if content:
             self.content.append(content)
         # build single string for html attributes
-        self.l = []
-        for entry in kwargs.keys():
-            self.l.append(' ' + entry + '="' + kwargs[entry] + '"')
-        self.html_attr = ' '.join(self.l)
-                
+        l = []
+        for entry, val in kwargs.items():
+            l.append(' ' + entry + '="' + val + '"')
+        self.html_attr = ' '.join(l)
+
     # Other Methods
 
     def append(self, content):
@@ -57,7 +57,7 @@ class OneLineTag(Element):
             else:
                 out_file.write(' ' + content + ' ')
         out_file.write('</{}>\n'.format(self.tag))
-        
+
 class SelfClosingTag(Element):
 
     def render(self, out_file, ind = ''):
