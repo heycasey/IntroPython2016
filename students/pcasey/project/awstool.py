@@ -15,10 +15,12 @@ This program is a menu-driven AWS utility that performs the following:
 
 import boto3
 # import pprint
-# import sys
+import sys
 # import json
 
 # Set the "resource" and "client" variables for EC2 and S3
+# AWS functions are separated between the "client" and "resource"
+# variables.
 
 ec2 = boto3.resource("ec2", region_name="us-west-2")
 ec2c = boto3.client("ec2", region_name="us-west-2")
@@ -29,14 +31,14 @@ s3c = boto3.client("s3", region_name="us-west-2")
 
 vpc = ec2.Vpc("vpc-8089aee4")
 
-# Main prompt
+# Main prompt - Hoping to use with dict as switch
 
 
-# def action_prompt():
-#     action = input("==> ")
-#     return action.strip()
+def action_prompt():
+    action = input("==> ")
+    return action.strip()
 
-# Create VPC subnet
+# Create VPC subnet function
 
 
 def create_subnet(subnetvar, az):
@@ -46,7 +48,7 @@ def create_subnet(subnetvar, az):
     except boto3.exceptions.botocore.client.ClientError as e:
         print(e.response["Error"]["Message"].strip("\""))
 
-# Delete VPC subnet
+# Delete VPC subnet function
 
 
 def delete_subnet(subid):
@@ -56,17 +58,17 @@ def delete_subnet(subid):
     except boto3.exceptions.botocore.client.ClientError as e:
         print(e.response["Error"]["Message"].strip("\""))
 
-# List VPC subnets
+# List VPC subnets function
 
 
 def list_subnets():
     listsub = ec2c.describe_subnets()
 
     for sub in listsub["Subnets"]:
-        print("Subnet ID = {} with CIDR of {} in AZ {} with {} available IPs".format(sub["SubnetId"], sub["CidrBlock"], sub["AvailabilityZone"], str(sub["AvailableIpAddressCount"])))
-    return listsub
+        print("Subnet ID = {0} with CIDR of {1} in AZ {2} with {3} available IPs".format(sub["SubnetId"], sub["CidrBlock"], sub["AvailabilityZone"], str(sub["AvailableIpAddressCount"])))
+    return(listsub)
 
-# Create new EC2 instances
+# Create new EC2 instances function
 
 
 def create_inst(subid, instname):
@@ -77,9 +79,7 @@ def create_inst(subid, instname):
     except boto3.exceptions.botocore.client.ClientError as e:
         print(e.response["Error"]["Message"].strip("\""))
 
-    # return newinst
-
-# Start and stop EC2 instances
+# Start and stop EC2 instances functions
 
 
 def start_inst(instid):
@@ -98,7 +98,7 @@ def stop_inst(instid):
     except boto3.exceptions.botocore.client.ClientError as e:
         print(e.response["Error"]["Message"].strip("\""))
 
-# Terminate EC2 instances
+# Terminate EC2 instances function
 
 
 def term_inst(instid):
@@ -109,7 +109,7 @@ def term_inst(instid):
         print(e.response["Error"]["Message"].strip("\""))
 
 
-# List EC2 instances
+# List EC2 instances function
 
 
 def list_inst():
@@ -118,7 +118,7 @@ def list_inst():
         print("ID: {0}  Name: {1}  Type: {2}  State: {3}".format(i.id, i.tags[0]["Value"], i.instance_type, i.state["Name"]))
     return(listinst)
 
-# Rename an EC2 instance
+# Rename an EC2 instance function
 
 
 def ren_inst(instid, newname):
@@ -128,7 +128,7 @@ def ren_inst(instid, newname):
     except boto3.exceptions.botocore.client.ClientError as e:
         print(e.response["Error"]["Message"].strip("\""))
 
-# Create S3 bucket
+# Create S3 bucket function
 
 
 def create_bucket(buckname):
@@ -138,7 +138,7 @@ def create_bucket(buckname):
     except boto3.exceptions.botocore.client.ClientError as e:
         print(e.response["Error"]["Message"].strip("\""))
 
-# Delete S3 bucket
+# Delete S3 bucket function
 
 
 def delete_bucket(buckname):
@@ -148,7 +148,7 @@ def delete_bucket(buckname):
     except boto3.exceptions.botocore.client.ClientError as e:
         print(e.response["Error"]["Message"].strip("\""))
 
-# List S3 buckets
+# List S3 buckets function
 
 
 def list_buckets():
@@ -158,15 +158,24 @@ def list_buckets():
         print(b.name)
     return(listbuck)
 
-# List S3 files
+# List S3 files function
 
 
 def list_files():
     listfile = s3.buckets.all()
     for buck in listfile:
         for obj in buck.objects.all():
-            print("Bucket: {}  File: {}".format(buck.name, obj.key))
+            print("Bucket: {0}  File: {1}".format(buck.name, obj.key))
     return(listfile)
+
+# Quit function
+
+
+def quit():
+    sys.exit(0)
+
+# Help menu
+
 
 intro = """
 AWS Configuration Tool by Paul Casey
@@ -241,5 +250,31 @@ def main():
         else:
             print("Enter a command. Type 'help' for a list of commands.")
 
+
 if __name__ == "__main__":
     main()
+
+# I'd like to use dict as switch, but how to do this for the options
+# that require one or more inputs?
+
+    # select_dict = {"csub": create_subnet,
+    #                "dsub": delete_subnet,
+    #                "lsub": list_subnets,
+    #                "imake": create_inst,
+    #                "istart": start_inst,
+    #                "istop": stop_inst,
+    #                "iterm": term_inst,
+    #                "ilist": list_inst,
+    #                "iren": ren_inst,
+    #                "cbuck": create_bucket,
+    #                "lbuck": list_buckets,
+    #                "ls": list_files,
+    #                "x": quit
+    #                }
+
+    # while True:
+    #     selection = action_prompt()
+    #     try:
+    #         select_dict[selection]()
+    #     except KeyError:
+    #         print("error: menu selection is invalid!")
