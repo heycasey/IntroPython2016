@@ -1,3 +1,8 @@
+"""
+this version tests the solution with slicing tests
+"""
+
+
 import pytest
 from slice_sparse import SparseArray
 
@@ -28,6 +33,7 @@ def test_get_element_not_in_array():
     with pytest.raises(IndexError):
         my_sparse[14]
 
+
 def test_str():
     my_array, my_sparse = set_up()
 
@@ -49,8 +55,6 @@ def test_set_slice_over_end():
     print(my_sparse)
     my_sparse[2:4] = [2, 3, 4]
     assert my_sparse[:] == [2, 0, 2, 3, 4, 3, 0, 0, 0, 4, 5, 6, 0, 2, 9]
-
-    assert False
 
 
 def test_get_length():

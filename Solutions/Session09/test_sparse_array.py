@@ -1,3 +1,7 @@
+"""
+This tests the solution that does not support slicing
+"""
+
 import pytest
 from sparse_array import SparseArray
 
@@ -95,11 +99,14 @@ def test_indices_change():
     assert (my_sparse[3] == 3)
 
 
+# this is a way to tell pytest that you expect this test to fail
+@pytest.mark.xfail
 def test_get_slice():
     my_array, my_sparse = set_up()
     assert my_sparse[2:4] == [0, 0]
 
 
+@pytest.mark.xfail
 def test_set_slice():
     my_array, my_sparse = set_up()
     my_sparse[2:4] = [2, 3, 4]
