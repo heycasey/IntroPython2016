@@ -8,8 +8,16 @@ Python class example.
 # The start of it all:
 # Fill it all in here.
 
+class TextWrapper:
+    def __init__(self, text):
+        self.text = text
+
+    def render(self, file_out, current_ind=""):
+        file_out.write(current_ind + self.text)
+
 class Element:
     tag = "html"
+    indent = "    "
 
     def __init__(self, content=None):
         self.content = []
@@ -17,6 +25,11 @@ class Element:
             self.content.append(content)
 
     def append(self, new_content):
+        if hasattr(content, "render"):
+            self.content.append(content
+        else:
+            )
+
         self.content.append(new_content)
 
     def render(self, file_out, tag=""):

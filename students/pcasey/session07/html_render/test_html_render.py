@@ -1,6 +1,6 @@
 #!/usr/env/python3
 
-from html_render import Element,Html,Body,P
+from html_render import Element, Html, Body, P
 import io
 
 
