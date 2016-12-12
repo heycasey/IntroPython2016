@@ -22,14 +22,18 @@ import sys
 # AWS functions are separated between the "client" and "resource"
 # variables.
 
-ec2 = boto3.resource("ec2", region_name="us-west-2")
-ec2c = boto3.client("ec2", region_name="us-west-2")
-s3 = boto3.resource("s3", region_name="us-west-2")
-s3c = boto3.client("s3", region_name="us-west-2")
+region = "us-west-2"
+myvpc = "vpc-8089aee4"
+mysg = "sg-3b319442"
+
+ec2 = boto3.resource("ec2", region_name=region)
+ec2c = boto3.client("ec2", region_name=region)
+s3 = boto3.resource("s3", region_name=region)
+s3c = boto3.client("s3", region_name=region)
 
 # Insert your VPC ID on this line
 
-vpc = ec2.Vpc("vpc-8089aee4")
+vpc = ec2.Vpc(myvpc)
 
 # Help menu
 
@@ -111,7 +115,7 @@ def create_inst():
     instname = input("Enter the name: ").strip()
 
     try:
-        newinst = ec2.create_instances(ImageId="ami-b04e92d0", MinCount=1, MaxCount=1, InstanceType="t2.micro", SecurityGroupIds=["sg-3b319442"], SubnetId=subid)
+        newinst = ec2.create_instances(ImageId="ami-b04e92d0", MinCount=1, MaxCount=1, InstanceType="t2.micro", SecurityGroupIds=[mysg], SubnetId=subid)
         ec2c.create_tags(Resources=[newinst[0].id], Tags=[{"Key": "Name", "Value": instname}])
         print("\nThe instance ID created was {} and is named {}".format(newinst[0].id, instname))
     except boto3.exceptions.botocore.client.ClientError as e:
